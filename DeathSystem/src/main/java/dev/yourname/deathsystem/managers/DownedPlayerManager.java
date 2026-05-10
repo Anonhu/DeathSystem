@@ -6,10 +6,8 @@ import dev.yourname.deathsystem.api.events.PlayerRevivedEvent;
 import dev.yourname.deathsystem.listeners.PlayerMoveListener;
 import dev.yourname.deathsystem.tasks.BleedTask;
 import dev.yourname.deathsystem.tasks.CountdownTask;
-import net.minecraft.world.entity.Pose;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -141,8 +139,7 @@ public class DownedPlayerManager {
 
     private void setDownedPose(Player player, boolean downed) {
         try {
-            var nmsPlayer = ((CraftPlayer) player).getHandle();
-            nmsPlayer.setPose(downed ? Pose.SWIMMING : Pose.STANDING);
+            player.setPose(downed ? org.bukkit.entity.Pose.SWIMMING : org.bukkit.entity.Pose.STANDING);
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to set pose: " + e.getMessage());
         }
