@@ -8,9 +8,11 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -48,6 +50,10 @@ public class PlayerMoveListener implements Listener {
         var state = plugin.getDownedPlayerManager().getState(player);
         if (state == null) return;
 
+        if (!player.isSwimming()) {
+            player.setSwimming(true);
+        }
+
         if (movedBlock) {
             if (!state.isCrawling) {
                 state.isCrawling = true;
@@ -58,6 +64,15 @@ public class PlayerMoveListener implements Listener {
                 state.isCrawling = false;
                 resetSpeed(player);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerSprint(PlayerToggleSprintEvent event) {
+        Player player = event.getPlayer();
+        if (!plugin.getDownedPlayerManager().isDown(player)) return;
+        if (event.isSprinting()) {
+            event.setCancelled(true);
         }
     }
 
@@ -132,6 +147,7 @@ public class PlayerMoveListener implements Listener {
         cancelSurrenderCountdown(player);
         clearSneakProgress(player);
         resetSpeed(player);
+        if (player.isSwimming()) player.setSwimming(false);
     }
 
     private void cancelSurrenderCountdown(Player player) {
