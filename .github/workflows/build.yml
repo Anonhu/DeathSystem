@@ -23,7 +23,10 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
 
     - name: Build with Gradle
-      run: cd DeathSystem && ./gradlew build
+      run: |
+        cd DeathSystem
+        chmod +x gradlew
+        ./gradlew build
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
