@@ -43,7 +43,7 @@ public class DownedPlayerManager {
         DownedState state = new DownedState(player.getLocation());
         downedPlayers.put(player.getUniqueId(), state);
 
-        player.setHealth(1.0);
+        player.setHealth(20.0);
         applyDownedEffects(player);
         player.setSneaking(true);
 

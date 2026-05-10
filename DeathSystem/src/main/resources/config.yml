@@ -1,7 +1,7 @@
 downed-state:
   max-wait-seconds: 60
-  bleed-rate-idle: 0.5
-  bleed-rate-crawling: 1.5
+  bleed-rate-idle: 0.33
+  bleed-rate-crawling: 1.0
   crawl-speed-modifier: 0.15
 
 revival:
