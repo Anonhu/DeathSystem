@@ -11,7 +11,7 @@ public class ParticleUtils {
         if (world == null) return;
 
         world.spawnParticle(Particle.HEART, location.add(0, 1, 0), 15, 0.5, 0.5, 0.5, 0.1);
-        world.spawnParticle(Particle.VILLAGER_HAPPY, location, 10, 0.5, 0.5, 0.5, 0.1);
+        world.spawnParticle(Particle.HAPPY_VILLAGER, location, 10, 0.5, 0.5, 0.5, 0.1);
         world.playSound(location, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.2f);
     }
 

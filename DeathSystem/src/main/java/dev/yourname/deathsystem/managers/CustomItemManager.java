@@ -51,10 +51,11 @@ public class CustomItemManager {
 
     private void registerBandageRecipe() {
         NamespacedKey key = new NamespacedKey(plugin, "bandage");
-        ShapedRecipe recipe = new ShapedRecipe(key, createBandage());
+        ItemStack result = createBandage();
+        result.setAmount(3);
+        ShapedRecipe recipe = new ShapedRecipe(key, result);
         recipe.shape("WWW", "   ", "   ");
         recipe.setIngredient('W', Material.WHITE_WOOL);
-        recipe.setAmount(3);
 
         plugin.getServer().addRecipe(recipe);
     }
