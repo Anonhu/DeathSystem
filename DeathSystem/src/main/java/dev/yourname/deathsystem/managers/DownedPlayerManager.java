@@ -6,8 +6,10 @@ import dev.yourname.deathsystem.api.events.PlayerRevivedEvent;
 import dev.yourname.deathsystem.listeners.PlayerMoveListener;
 import dev.yourname.deathsystem.tasks.BleedTask;
 import dev.yourname.deathsystem.tasks.CountdownTask;
+import net.minecraft.world.entity.Pose;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -45,7 +47,7 @@ public class DownedPlayerManager {
 
         player.setHealth(20.0);
         applyDownedEffects(player);
-        player.setSwimming(true);
+        setDownedPose(player, true);
         player.setSprinting(false);
 
         state.bleedTask = new BleedTask(plugin, player);
@@ -67,7 +69,7 @@ public class DownedPlayerManager {
         downedPlayers.remove(player.getUniqueId());
 
         removeDownedEffects(player);
-        player.setSwimming(false);
+        setDownedPose(player, false);
 
         if (moveListener != null) {
             moveListener.cleanup(player);
@@ -113,7 +115,7 @@ public class DownedPlayerManager {
         downedPlayers.remove(player.getUniqueId());
 
         removeDownedEffects(player);
-        player.setSwimming(false);
+        setDownedPose(player, false);
 
         if (moveListener != null) {
             moveListener.cleanup(player);
@@ -135,6 +137,15 @@ public class DownedPlayerManager {
 
     public DownedState getState(Player player) {
         return downedPlayers.get(player.getUniqueId());
+    }
+
+    private void setDownedPose(Player player, boolean downed) {
+        try {
+            var nmsPlayer = ((CraftPlayer) player).getHandle();
+            nmsPlayer.setPose(downed ? Pose.SWIMMING : Pose.STANDING);
+        } catch (Exception e) {
+            plugin.getLogger().warning("Failed to set pose: " + e.getMessage());
+        }
     }
 
     private void applyDownedEffects(Player player) {

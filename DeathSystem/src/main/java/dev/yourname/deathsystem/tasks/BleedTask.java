@@ -34,9 +34,6 @@ public class BleedTask extends BukkitRunnable {
             );
         } else {
             player.setHealth(newHp);
-            if (!player.isSwimming()) {
-                player.setSwimming(true);
-            }
             player.getWorld().spawnParticle(
                 org.bukkit.Particle.DAMAGE_INDICATOR,
                 player.getLocation().add(0, 0.5, 0),

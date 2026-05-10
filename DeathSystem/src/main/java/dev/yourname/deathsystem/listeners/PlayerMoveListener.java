@@ -50,10 +50,6 @@ public class PlayerMoveListener implements Listener {
         var state = plugin.getDownedPlayerManager().getState(player);
         if (state == null) return;
 
-        if (!player.isSwimming()) {
-            player.setSwimming(true);
-        }
-
         if (movedBlock) {
             if (!state.isCrawling) {
                 state.isCrawling = true;
@@ -147,7 +143,6 @@ public class PlayerMoveListener implements Listener {
         cancelSurrenderCountdown(player);
         clearSneakProgress(player);
         resetSpeed(player);
-        if (player.isSwimming()) player.setSwimming(false);
     }
 
     private void cancelSurrenderCountdown(Player player) {
