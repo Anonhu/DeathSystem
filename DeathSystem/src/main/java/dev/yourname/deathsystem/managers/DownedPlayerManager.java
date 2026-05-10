@@ -46,6 +46,7 @@ public class DownedPlayerManager {
         player.setHealth(20.0);
         applyDownedEffects(player);
         player.setSneaking(true);
+        player.setSwimming(true);
 
         state.bleedTask = new BleedTask(plugin, player);
         state.bleedTask.runTaskTimer(plugin, 0L, 20L);
@@ -67,6 +68,7 @@ public class DownedPlayerManager {
 
         removeDownedEffects(player);
         player.setSneaking(false);
+        player.setSwimming(false);
 
         if (moveListener != null) {
             moveListener.cleanup(player);
@@ -113,6 +115,7 @@ public class DownedPlayerManager {
 
         removeDownedEffects(player);
         player.setSneaking(false);
+        player.setSwimming(false);
 
         if (moveListener != null) {
             moveListener.cleanup(player);
