@@ -1,16 +1,17 @@
 name: DeathSystem
-version: '${project.version}'
-main: dev.yourname.deathsystem.DeathSystemPlugin
+version: '${version}'
+main: dev.anonhu.deathsystem.DeathSystemPlugin
 api-version: '1.21'
-author: YourName
-description: Advanced downed-state death system
+author: Anonhu
+description: Advanced downed-state death system for Minecraft servers
+website: https://github.com/Anonhu/DeathSystem
 
 softdepend:
   - PlaceholderAPI
 
 commands:
   deathsystem:
-    description: DeathSystem management command
+    description: DeathSystem management
     aliases:
       - ds
     usage: /<command> [reload]
@@ -21,5 +22,5 @@ permissions:
     description: Access to /ds reload and admin tools
     default: op
   deathsystem.bypass:
-    description: Bypass downed state - instant respawn without penalty
+    description: Bypass downed state — instant respawn without penalty
     default: false
