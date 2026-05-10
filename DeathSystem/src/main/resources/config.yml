@@ -1,0 +1,45 @@
+downed-state:
+  max-wait-seconds: 60
+  bleed-rate-idle: 0.5
+  bleed-rate-crawling: 1.5
+  crawl-speed-modifier: 0.15
+
+revival:
+  radius-blocks: 2
+  surrender-hold-seconds: 3
+  enchanted-apple:
+    hp-percent: 50
+    channel-seconds: 5
+  healing-potion:
+    hp-percent: 20
+    channel-seconds: 5
+  bandage:
+    hp-percent: 5
+    channel-seconds: 3
+  defibrillator:
+    hp-percent: 30
+    channel-seconds: 0
+
+debuffs-after-revival:
+  self-revive:
+    weakness-level: 2
+    slowness-level: 1
+    duration-seconds: 60
+  ally-revive:
+    weakness-level: 1
+    duration-seconds: 30
+
+chat-distortion:
+  enabled: true
+  distort-every-n-chars: 4
+
+announcements:
+  local-radius-blocks: 50
+  dynmap-marker: false
+
+custom-items:
+  bandage:
+    custom-model-data: 1001
+  defibrillator:
+    custom-model-data: 1002
+    max-uses: 3

@@ -1,0 +1,25 @@
+name: DeathSystem
+version: '${project.version}'
+main: dev.yourname.deathsystem.DeathSystemPlugin
+api-version: '1.21'
+author: YourName
+description: Advanced downed-state death system
+
+softdepend:
+  - PlaceholderAPI
+
+commands:
+  deathsystem:
+    description: DeathSystem management command
+    aliases:
+      - ds
+    usage: /<command> [reload]
+    permission: deathsystem.admin
+
+permissions:
+  deathsystem.admin:
+    description: Access to /ds reload and admin tools
+    default: op
+  deathsystem.bypass:
+    description: Bypass downed state - instant respawn without penalty
+    default: false
