@@ -24,6 +24,8 @@ public class BleedTask extends BukkitRunnable {
         var state = plugin.getDownedPlayerManager().getState(player);
         var cfg = plugin.getPluginConfig();
 
+        plugin.getDownedPlayerManager().refreshDownedPose(player);
+
         double bleedRate = state.isCrawling ? cfg.bleedRateCrawling : cfg.bleedRateIdle;
         double newHp = player.getHealth() - bleedRate;
 

@@ -24,6 +24,7 @@ public class CommandListener implements Listener {
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         if (!plugin.getDownedPlayerManager().isDown(player)) return;
+        if (player.hasPermission("deathsystem.admin")) return;
         if (player.hasPermission("deathsystem.bypass")) return;
 
         String cmd = event.getMessage().toLowerCase().split(" ")[0];

@@ -54,4 +54,18 @@ public class InventoryListener implements Listener {
         if (!plugin.getDownedPlayerManager().isDown(player)) return;
         event.setCancelled(true);
     }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBlockBreak(org.bukkit.event.block.BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        if (!plugin.getDownedPlayerManager().isDown(player)) return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBlockPlace(org.bukkit.event.block.BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        if (!plugin.getDownedPlayerManager().isDown(player)) return;
+        event.setCancelled(true);
+    }
 }

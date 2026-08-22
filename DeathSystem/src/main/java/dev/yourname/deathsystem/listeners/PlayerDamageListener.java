@@ -27,6 +27,16 @@ public class PlayerDamageListener implements Listener {
             return;
         }
 
+        // Void и /kill не перехватываем — иначе нельзя умереть вообще
+        var cause = event.getCause();
+        if (cause == EntityDamageEvent.DamageCause.VOID
+                || cause == EntityDamageEvent.DamageCause.KILL) {
+            return;
+        }
+
+        // Право bypass — обычная смерть без downed state
+        if (player.hasPermission("deathsystem.bypass")) return;
+
         if (player.isInvulnerable()) return;
 
         double resultHp = player.getHealth() - event.getFinalDamage();
@@ -36,7 +46,13 @@ public class PlayerDamageListener implements Listener {
 
         Player killer = null;
         if (event instanceof EntityDamageByEntityEvent byEntityEvent) {
-            if (byEntityEvent.getDamager() instanceof Player k) killer = k;
+            var damager = byEntityEvent.getDamager();
+            if (damager instanceof Player k) {
+                killer = k;
+            } else if (damager instanceof org.bukkit.entity.Projectile proj
+                    && proj.getShooter() instanceof Player shooter) {
+                killer = shooter;
+            }
         }
 
         final Player finalKiller = killer;

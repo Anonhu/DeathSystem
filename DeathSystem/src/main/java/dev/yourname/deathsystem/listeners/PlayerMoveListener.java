@@ -21,6 +21,9 @@ import java.util.UUID;
 
 public class PlayerMoveListener implements Listener {
 
+    private static final net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer LEGACY =
+        net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection();
+
     private final DeathSystemPlugin plugin;
     private final Map<UUID, Integer> sneakSeconds = new HashMap<>();
     private final Map<UUID, BukkitRunnable> surrenderTasks = new HashMap<>();
@@ -39,16 +42,14 @@ public class PlayerMoveListener implements Listener {
         Location to = event.getTo();
         if (to == null) return;
 
-        boolean movedBlock = from.getBlockX() != to.getBlockX()
-                          || from.getBlockZ() != to.getBlockZ();
-
-        if (to.getY() > from.getY() + 0.05) {
-            event.setCancelled(true);
-            return;
-        }
-
         var state = plugin.getDownedPlayerManager().getState(player);
         if (state == null) return;
+
+        // Клиент сбрасывает SWIMMING-позу — удерживаем (без телепорта назад)
+        plugin.getDownedPlayerManager().refreshDownedPose(player);
+
+        boolean movedBlock = from.getBlockX() != to.getBlockX()
+                          || from.getBlockZ() != to.getBlockZ();
 
         if (movedBlock) {
             if (!state.isCrawling) {
@@ -161,7 +162,7 @@ public class PlayerMoveListener implements Listener {
         for (int i = 0; i < 10; i++) {
             bar.append(i < filled ? "§c█" : "§8░");
         }
-        player.sendActionBar(Component.text(
+        player.sendActionBar(LEGACY.deserialize(
             "§7Сдаётесь... " + bar + " §c" + current + "§8/§c" + holdSeconds + " сек"
             + "  §8(§7отпустите §8SNEAK §7чтобы отменить§8)"
         ));

@@ -21,6 +21,9 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        // Событие файрится для каждой руки — обрабатываем только главную
+        if (event.getHand() != org.bukkit.inventory.EquipmentSlot.HAND) return;
+
         if (!(event.getRightClicked() instanceof Player target)) return;
 
         Player reviver = event.getPlayer();

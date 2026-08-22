@@ -71,6 +71,10 @@ public class RevivalManager {
         return lastReviveItems.get(reviver.getUniqueId());
     }
 
+    public void clearLastReviveItem(Player reviver) {
+        lastReviveItems.remove(reviver.getUniqueId());
+    }
+
     private void completeRevival(Player reviver, Player target, int hpPercent, ItemStack item) {
         consumeItem(reviver, item);
         plugin.getDownedPlayerManager().revivePlayer(target, reviver, hpPercent);

@@ -3,7 +3,6 @@ package dev.yourname.deathsystem.listeners;
 import dev.yourname.deathsystem.DeathSystemPlugin;
 import dev.yourname.deathsystem.utils.ChatDistorter;
 import io.papermc.paper.event.player.AsyncChatEvent;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +29,8 @@ public class ChatListener implements Listener {
         int every = plugin.getPluginConfig().chatDistortEveryNChars;
         String distorted = ChatDistorter.distort(original, every);
 
-        event.message(Component.text("§7*" + distorted + "*"));
+        event.message(net.kyori.adventure.text.Component.text(distorted,
+            net.kyori.adventure.text.format.NamedTextColor.GRAY)
+            .decorate(net.kyori.adventure.text.format.TextDecoration.ITALIC));
     }
 }

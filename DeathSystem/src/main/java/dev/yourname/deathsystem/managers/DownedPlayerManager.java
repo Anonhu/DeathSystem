@@ -43,10 +43,13 @@ public class DownedPlayerManager {
         DownedState state = new DownedState(player.getLocation());
         downedPlayers.put(player.getUniqueId(), state);
 
-        player.setHealth(20.0);
+        var maxAttr = player.getAttribute(Attribute.MAX_HEALTH);
+        double maxHp = maxAttr != null ? maxAttr.getValue() : 20.0;
+        player.setHealth(Math.min(maxHp, 20.0));
         applyDownedEffects(player);
         setDownedPose(player, true);
         player.setSprinting(false);
+        player.setGliding(false);
 
         state.bleedTask = new BleedTask(plugin, player);
         state.bleedTask.runTaskTimer(plugin, 0L, 20L);
@@ -103,6 +106,10 @@ public class DownedPlayerManager {
         PlayerRevivedEvent event = new PlayerRevivedEvent(player, reviver,
             selfRevive ? null : plugin.getRevivalManager().getLastReviveItem(reviver));
         plugin.getServer().getPluginManager().callEvent(event);
+
+        if (!selfRevive) {
+            plugin.getRevivalManager().clearLastReviveItem(reviver);
+        }
     }
 
     public void killDowned(Player player) {
@@ -145,10 +152,19 @@ public class DownedPlayerManager {
         }
     }
 
+    /**
+     * Клиент периодически сбрасывает позу — переустанавливаем.
+     * Вызывается из PlayerMoveListener и BleedTask.
+     */
+    public void refreshDownedPose(Player player) {
+        if (player.getPose() != org.bukkit.entity.Pose.SWIMMING) {
+            setDownedPose(player, true);
+        }
+    }
+
     private void applyDownedEffects(Player player) {
         int duration = 999999;
-        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration, 0, false, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, duration, 3, false, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, duration, 1, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, duration, 3, false, false));
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, duration, 128, false, false));
     }
@@ -193,8 +209,10 @@ public class DownedPlayerManager {
         );
 
         int radius = plugin.getPluginConfig().localAnnouncementRadius;
+        int radiusSq = radius * radius;
         player.getWorld().getPlayers().stream()
-            .filter(p -> p.getLocation().distance(loc) <= radius)
+            .filter(p -> p.getWorld().equals(loc.getWorld()))
+            .filter(p -> p.getLocation().distanceSquared(loc) <= radiusSq)
             .filter(p -> !p.equals(player))
             .forEach(p -> p.sendMessage(msg));
     }
